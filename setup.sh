@@ -18,65 +18,13 @@ includeDependencies
 output_file="output.log"
 
 function main() {
-    read -rp "Do you want to create a new non-root user? (Recommended) [Y/N] " createUser
-
-    # Run setup functions
-    trap cleanup EXIT SIGHUP SIGINT SIGTERM
-
-    if [[ $createUser == [nN] ]]; then
-        username=$(whoami)
-        updateUserAccount "${username}"
-    elif [[ $createUser == [yY] ]]; then
-        read -rp "Enter the username of the new user account: " username
-        addUserAccount "${username}"
-    else
-	echo 'This is not a valid choice!'
-	exit 1
-    fi
-
-    read -rp $'Paste in the public SSH key for the new user:\n' sshKey
-    echo 'Running setup script...'
     logTimestamp "${output_file}"
-
     exec 3>&1 >>"${output_file}" 2>&1
 
-
-    disableSudoPassword "${username}"
-    addSSHKey "${username}" "${sshKey}"
-    changeSSHConfig
-    setupUfw
-
-    if ! hasSwap; then
-        setupSwap
-    fi
-
+    echo "Configuring System Time... " >&3
     setupTimezone
 
-    echo "Configuring System Time... " >&3
-    configureNTP
-
-    sudo service ssh restart
-
-    cleanup
-
     echo "Setup Done! Log file is located at ${output_file}" >&3
-}
-
-function setupSwap() {
-    createSwap
-    mountSwap
-    tweakSwapSettings "10" "50"
-    saveSwapSettings "10" "50"
-}
-
-function hasSwap() {
-    [[ "$(sudo swapon -s)" == *"/swapfile"* ]]
-}
-
-function cleanup() {
-    if [[ -f "/etc/sudoers.bak" ]]; then
-        revertSudoers
-    fi
 }
 
 function logTimestamp() {
@@ -89,10 +37,10 @@ function logTimestamp() {
 }
 
 function setupTimezone() {
-    echo -ne "Enter the timezone for the server (Default is 'Asia/Singapore'):\n" >&3
+    echo -ne "Enter the timezone for the server (Default is 'America/Chicago'):\n" >&3
     read -r timezone
     if [ -z "${timezone}" ]; then
-        timezone="Asia/Singapore"
+        timezone="America/Chicago"
     fi
     setTimezone "${timezone}"
     echo "Timezone is set to $(cat /etc/timezone)" >&3
