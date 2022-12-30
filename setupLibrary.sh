@@ -46,6 +46,7 @@ function installPackages(){
 	         2 "PostgreSQL-14" off
 	         3 "NGINX" off
 	         4 "Zip/Unzip" off
+             5 "Postfix" off
     )
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 	clear   
@@ -68,6 +69,10 @@ function installPackages(){
                 4)
                     echo "Installing Zip/Unzip" >&3
                     sudo apt-get install zip unzip -y
+                    ;;
+                5)
+                    echo "Installing Postfix" >&3
+                    sudo apt-get install postfix -y
                     ;;
             esac
         done
