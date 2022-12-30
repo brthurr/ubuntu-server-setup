@@ -63,6 +63,7 @@ function installPackages(){
                 3)
                     echo "Installing NGINX" >&3
                     sudo apt-get install nginx -y
+                    sudo snap install --classic certbot
                     ;;
                 4)
                     echo "Installing Zip/Unzip" >&3
