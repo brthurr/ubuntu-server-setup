@@ -24,6 +24,7 @@ function setTimezone() {
 
 function updateServer() {
     sudo apt-get update
+    sudo apt-get install -y dialog
     sudo apt-get -y upgrade
 }
 
@@ -35,4 +36,25 @@ function setupPyEnv() {
     echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.zshrc
 }
 
-function changeShell()
+function installPackages(){
+    for choice in $choices
+		do
+		    case $choice in
+	        	1)
+                    echo "Installing Mysql Server"
+                    sudo apt-get install mysql-server -y
+                    ;;
+                2)
+                    echo "Installing PostgreSQL-14"
+                    sudo apt-get install postgresql-14 -y
+                    ;;
+                3)
+                    echo "Installing NGINX"
+                    sudo apt-get install nginx -y
+                    ;;
+                4)
+                    echo "Installing Zip/Unzip"
+                    sudo apt-get install zip unzip -y
+            esac
+        done
+}
