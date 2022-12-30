@@ -37,6 +37,14 @@ function setupPyEnv() {
 }
 
 function installPackages(){
+    cmd=(whiptail --separate-output --title "Package Installation" --checklist "Please Select Software you want to install:" 22 76 16)
+	options=(1 "MySQL" off    # any option can be set to default to "on"
+	         2 "PostgreSQL-14" off
+	         3 "NGINX" off
+	         4 "Zip/Unzip" off
+    )
+    choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
+	clear   
     for choice in $choices
 		do
 		    case $choice in
@@ -55,6 +63,20 @@ function installPackages(){
                 4)
                     echo "Installing Zip/Unzip"
                     sudo apt-get install zip unzip -y
+                    ;;
             esac
         done
+}
+
+function changeShell() {
+    echo -ne "Do you want to change your shell to zsh? (Recommended) [Y/N] " >&3
+    read -r yn 
+
+    if [[ $yn == [yY] ]]; then
+        sudo chsh -s $(which zsh) $(whoami)
+        echo "Logout and back in to use zsh." >&3
+        break
+    elif [[ $yn == [nN] ]]; then
+        break
+    fi
 }
