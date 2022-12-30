@@ -25,6 +25,8 @@ function setTimezone() {
 function updateServer() {
     sudo apt-get update
     sudo apt-get install -y dialog
+    sudo apt-get install build-essential -y
+    sudo apt-get install libssl-dev libffi-dev libncurses5-dev zlib1g zlib1g-dev libreadline-dev libbz2-dev libsqlite3-dev -y
     sudo apt-get -y upgrade
 }
 
@@ -49,34 +51,33 @@ function installPackages(){
 		do
 		    case $choice in
 	        	1)
-                    echo "Installing Mysql Server"
+                    echo "Installing Mysql Server" >&3
                     sudo apt-get install mysql-server -y
                     ;;
                 2)
-                    echo "Installing PostgreSQL-14"
+                    echo "Installing PostgreSQL-14" >&3
                     sudo apt-get install postgresql-14 -y
                     ;;
                 3)
-                    echo "Installing NGINX"
+                    echo "Installing NGINX" >&3
                     sudo apt-get install nginx -y
                     ;;
                 4)
-                    echo "Installing Zip/Unzip"
+                    echo "Installing Zip/Unzip" >&3
                     sudo apt-get install zip unzip -y
                     ;;
             esac
         done
 }
 
-function changeShell() {
+function changeShell() {    
+    while true; do
     echo -ne "Do you want to change your shell to zsh? (Recommended) [Y/N] " >&3
-    read -r yn 
-
-    if [[ $yn == [yY] ]]; then
-        sudo chsh -s $(which zsh) $(whoami)
-        echo "Logout and back in to use zsh." >&3
-        break
-    elif [[ $yn == [nN] ]]; then
-        break
-    fi
+    read -r yn
+    case $yn in
+        [Yy]* ) make install; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
 }
