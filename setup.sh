@@ -22,16 +22,16 @@ function main() {
     exec 3>&1 >>"${output_file}" 2>&1
 
     echo "Installing and configuring ZSH/ZSH-OMG and Powerlevel10k " >&3
-    #setupZsh
+    setupZsh
 
     echo "Upgrading server... " >&3
-    #updateServer
+    updateServer
     
     echo "Configuring System Time... " >&3
-    #setupTimezone
+    setupTimezone
 
     echo "Install pyenv... " >&3
-    #setupPyEnv
+    setupPyEnv
 
     echo "Installing packages... " >&3
    
