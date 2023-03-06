@@ -2,7 +2,7 @@
 
 # Setup the ZSH
 function setupZsh() {
-    sudo apt-get install zsh
+    sudo apt-get install zsh -y
     yes y | sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     git clone https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/themes/powerlevel10k
     echo -e "$(cat pl10kconfig.cfg)\n\n$(cat ~/.zshrc)" > ~/.zshrc
@@ -24,14 +24,14 @@ function setTimezone() {
 
 function updateServer() {
     sudo apt-get update
-    sudo apt install build-essential libssl-dev zlib1g-dev \
-    libbz2-dev libreadline-dev libsqlite3-dev curl llvm \
-    libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
-    libffi-dev liblzma-dev libpq-dev -y
     sudo apt-get -y upgrade
 }
 
 function setupPyEnv() {
+    sudo apt install build-essential libssl-dev zlib1g-dev \
+    libbz2-dev libreadline-dev libsqlite3-dev curl llvm \
+    libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
+    libffi-dev liblzma-dev libpq-dev -y
     sh -c "$(curl https://pyenv.run)"
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
     echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
@@ -46,6 +46,7 @@ function installPackages(){
 	         3 "NGINX" off
 	         4 "Zip/Unzip" off
              5 "Postfix" off
+             6 "PyEnv" off
     )
     choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 	clear   
@@ -72,6 +73,10 @@ function installPackages(){
                 5)
                     echo "Installing Postfix" >&3
                     sudo apt-get install postfix -y
+                    ;;
+                6)
+                    echo "Install pyenv... " >&3
+                    setupPyEnv
                     ;;
             esac
         done

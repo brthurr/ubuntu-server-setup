@@ -30,9 +30,6 @@ function main() {
     echo "Configuring System Time... " >&3
     setupTimezone
 
-    echo "Install pyenv... " >&3
-    setupPyEnv
-
     echo "Installing packages... " >&3
    
     installPackages
