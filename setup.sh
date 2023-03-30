@@ -38,6 +38,8 @@ function main() {
 
     echo "Setup Done! Log file is located at ${output_file}." >&3
 
+    exit 0
+
 }
 
 function logTimestamp() {

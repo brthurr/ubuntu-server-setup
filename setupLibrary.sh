@@ -87,7 +87,7 @@ function changeShell() {
     echo -ne "Do you want to change your shell to zsh? (Recommended) [Y/N] " >&3
     read -r yn
     case $yn in
-        [Yy]* ) make install; break;;
+        [Yy]* ) sudo chsh -s $(which zsh) $(whoami); break;;
         [Nn]* ) break;;
         * ) echo "Please answer yes or no.";;
     esac
