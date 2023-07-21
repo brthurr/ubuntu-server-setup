@@ -25,7 +25,7 @@ function setTimezone() {
 function updateServer() {
     sudo apt-get update
     sudo apt-get -y upgrade
-    sudo apt-get install whiptail # Used for install packages later
+    sudo apt-get install whiptail -y # Used for install packages later
 }
 
 function setupPyEnv() {
